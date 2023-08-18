@@ -1,0 +1,60 @@
+
+id: test
+name: clinical-note-template
+title: Clinical note template
+
+classes:
+  ClinicalNote:
+    tree_root: true
+    attributes:
+
+      age: 
+        description: age of the patient
+        range: Age
+
+      gender: 
+        description: gender of the patient
+        range: Gender
+
+      diagnosis:
+        description: semicolon-separated list of patient's diagnosis
+        annotations:
+          prompt.examples: cancer, ulcerative colitis 
+        multivalued: true
+        range: Disease
+
+      symptoms:
+        description: semicolon-separated list of patient's symptoms
+        annotations:
+          prompt.examples: headache, fever
+        multivalued: true
+        range: Symptom
+
+      clinical_scores:
+        description: semicolon-separated list of patient's clinical scores
+        annotations:
+          prompt.examples: EDSS score, mayo score
+        multivalued: true
+        range: ClinicalScore
+
+      clinical_observations:
+        description: semicolon-separated list of patient's clinical observations including lab results
+        annotations:
+          prompt.examples: body weight, eye color, EKG data
+        multivalued: true
+        range: ClinicalObservation
+
+      drugs:
+        description: semicolon-separated list of small molecule drugs prescribed or taken by the patient
+        annotations:
+          prompt.examples: aspirin, pantaprazole
+        multivalued: true
+        range: Drug
+
+      procedures:
+        description: >-
+          semicolon-separated list of procedures, therapies and treatments undergone by the patient
+        annotations:
+          prompt.examples: colonoscopy, exercise, surgery
+        multivalued: true
+        range: Procedure
