@@ -1,12 +1,12 @@
 from setuptools import setup
 
 setup(
-    name='genai_nlp',
+    name='text2fhir',
     version='0.1.0',    
     description='A example Python package',
     author='Dima',
     author_email='test@test.gmail',
-    packages=['genai_nlp'],
+    packages=['text2fhir'],
     install_requires=[
         'numpy',                     
     ]
