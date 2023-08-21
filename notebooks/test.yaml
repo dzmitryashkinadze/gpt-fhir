@@ -16,45 +16,31 @@ classes:
         description: gender of the patient
         range: Gender
 
-      diagnosis:
-        description: semicolon-separated list of patient's diagnosis
+      conditions:
+        description: semicolon-separated list of patient's conditions, symptoms and diagnoses
         annotations:
-          prompt.examples: cancer, ulcerative colitis 
+          prompt.examples: cancer, ulcerative colitis, concussion, headache, fever, pain
         multivalued: true
         range: Disease
 
-      symptoms:
-        description: semicolon-separated list of patient's symptoms
+      observations:
+        description: semicolon-separated list of observations in a key value format such as lab data, measurements, vital signs, clinical findings and various scores
         annotations:
-          prompt.examples: headache, fever
-        multivalued: true
-        range: Symptom
-
-      clinical_scores:
-        description: semicolon-separated list of patient's clinical scores
-        annotations:
-          prompt.examples: EDSS score, mayo score
+          prompt.examples: blood presure (90/60 mmHg), body temperature (36 deg.), body weight (60 kg), blood glucose (7.8 mmol/L), bone density (T=-1.0), EDSS score (5)
         multivalued: true
         range: ClinicalScore
 
-      clinical_observations:
-        description: semicolon-separated list of patient's clinical observations including lab results
+      medications:
+        description: semicolon-separated list of statements about medication use by the patient each with medication name and dose and frequence information if available
         annotations:
-          prompt.examples: body weight, eye color, EKG data
-        multivalued: true
-        range: ClinicalObservation
-
-      drugs:
-        description: semicolon-separated list of small molecule drugs prescribed or taken by the patient
-        annotations:
-          prompt.examples: aspirin, pantaprazole
+          prompt.examples: aspirin (daily), pantaprazole (20 mg)
         multivalued: true
         range: Drug
 
       procedures:
         description: >-
-          semicolon-separated list of procedures, therapies and treatments undergone by the patient
+          semicolon-separated list of procedures and therapies and tests performed on the patient
         annotations:
-          prompt.examples: colonoscopy, exercise, surgery
+          prompt.examples: colonoscopy, physiotherapy, surgery, biopsy, endoscopy
         multivalued: true
         range: Procedure
