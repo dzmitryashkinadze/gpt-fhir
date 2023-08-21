@@ -5,4 +5,3 @@ config.ini
 */__pycache__/
 __pycache__/
 logs.txt
-data/
