@@ -10,7 +10,6 @@ classes:
 
       age: 
         description: age of the patient
-        range: Age
 
       gender: 
         description: gender of the patient
@@ -21,21 +20,21 @@ classes:
         annotations:
           prompt.examples: cancer, ulcerative colitis, concussion, headache, fever, pain
         multivalued: true
-        range: Disease
+        range: Condition
 
       observations:
         description: semicolon-separated list of observations in a key value format such as lab data, measurements, vital signs, clinical findings and various scores
         annotations:
           prompt.examples: blood presure (90/60 mmHg), body temperature (36 deg.), body weight (60 kg), blood glucose (7.8 mmol/L), bone density (T=-1.0), EDSS score (5)
         multivalued: true
-        range: ClinicalScore
+        range: Observation
 
       medications:
         description: semicolon-separated list of statements about medication use by the patient each with medication name and dose and frequence information if available
         annotations:
           prompt.examples: aspirin (daily), pantaprazole (20 mg)
         multivalued: true
-        range: Drug
+        range: Medication
 
       procedures:
         description: >-
@@ -44,3 +43,49 @@ classes:
           prompt.examples: colonoscopy, physiotherapy, surgery, biopsy, endoscopy
         multivalued: true
         range: Procedure
+
+  Procedure:
+    is_a: NamedEntity
+    annotations:
+      annotators: sqlite:obo:ncit
+
+  Medication:
+    is_a: NamedEntity
+    annotations:
+      annotators: sqlite:obo:ncit
+
+  Observation:
+    is_a: NamedEntity
+    annotations:
+      annotators: sqlite:obo:ncit
+
+  Condition:
+    is_a: NamedEntity
+    annotations:
+      annotators: sqlite:obo:ncit
+
+  Gender:
+    is_a: NamedEntity
+    annotations:
+      annotators: sqlite:obo:ncit
+
+  NamedEntity:
+    abstract: true
+    attributes:
+      id:
+        description: >-
+          A unique identifier for the named entity
+        comments:
+          - this is populated during the grounding and normalization step
+        identifier: true
+        annotations:
+          prompt.skip: "true"
+      label:
+        aliases:
+          - name
+        description: >-
+          The label (name) of the named thing
+        range: string
+        slot_uri: rdfs:label
+        annotations:
+          owl: AnnotationProperty, AnnotationAssertion
