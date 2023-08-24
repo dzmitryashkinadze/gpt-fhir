@@ -4,7 +4,7 @@ For many use cases it is neccessary to extract medically relevant information fr
 
 ## Set up
 * Create a new conda environment
-* Activate it
+* Activate it.
 * Install dependencies
 * Install main package
 
