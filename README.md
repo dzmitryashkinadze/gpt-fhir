@@ -6,7 +6,7 @@ For many use cases it is neccessary to extract medically relevant information fr
 * FHIR server
 * H20 GPT service
 
-## Set up
+## Set up.
 * Create a new conda environment
 * Activate it.
 * Install dependencies
