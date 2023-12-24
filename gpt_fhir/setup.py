@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(
-    name="gpt-fhir",
+    name="gpt_fhir",
     version="0.1",
     description="GPT-FHIR",
     author="Dzmitry Ashkinadze",
