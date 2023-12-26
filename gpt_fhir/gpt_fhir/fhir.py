@@ -2,6 +2,11 @@ from fhirclient.models.condition import Condition
 from fhirclient.models.medicationstatement import MedicationStatement
 from fhirclient.models.procedure import Procedure
 from fhirclient.client import FHIRClient
+from fhirclient.models.condition import ConditionStage, ConditionEvidence
+from fhirclient.models.codeableconcept import CodeableConcept
+from fhirclient.models.fhirdate import FHIRDate
+from fhirclient.models.age import Age
+from fhirclient.models.annotation import Annotation
 
 
 class FHIR:
@@ -55,27 +60,29 @@ class FHIR:
 
             # add verificationStatus if present
             if "verificationStatus" in params:
-                condition.verificationStatus = {"text": params["verificationStatus"]}
+                condition.verificationStatus = CodeableConcept(
+                    {"text": params["verificationStatus"]}
+                )
 
             # add category if present
             if "category" in params:
-                condition.category = params["category"]
+                condition.category = [CodeableConcept({"text": params["category"]})]
 
             # add severity if present
             if "severity" in params:
-                condition.severity = params["severity"]
+                condition.severity = CodeableConcept({"text": params["severity"]})
 
             # add bodySite if present
             if "bodySite" in params:
-                condition.bodySite = params["bodySite"]
+                condition.bodySite = [CodeableConcept({"text": params["bodySite"]})]
 
             # add onsetDateTime if present
             if "onsetDateTime" in params:
-                condition.onsetDateTime = params["onsetDateTime"]
+                condition.onsetDateTime = FHIRDate(params["onsetDateTime"])
 
             # add onsetAge if present
             if "onsetAge" in params:
-                condition.onsetAge = params["onsetAge"]
+                condition.onsetAge = Age({"value": params["onsetAge"]})
 
             # add onsetString if present
             if "onsetString" in params:
@@ -83,11 +90,11 @@ class FHIR:
 
             # add abatementDateTime if present
             if "abatementDateTime" in params:
-                condition.abatementDateTime = params["abatementDateTime"]
+                condition.abatementDateTime = FHIRDate(params["abatementDateTime"])
 
             # add abatementAge if present
             if "abatementAge" in params:
-                condition.abatementAge = params["abatementAge"]
+                condition.abatementAge = Age({"value": params["abatementAge"]})
 
             # add abatementString if present
             if "abatementString" in params:
@@ -95,19 +102,23 @@ class FHIR:
 
             # add recordedDate if present
             if "recordedDate" in params:
-                condition.recordedDate = params["recordedDate"]
+                condition.recordedDate = FHIRDate(params["recordedDate"])
 
             # add stage if present
             if "stage" in params:
-                condition.stage = params["stage"]
+                condition.stage = [
+                    ConditionStage({"summary": {"text": params["stage"]}})
+                ]
 
             # add evidence if present
             if "evidence" in params:
-                condition.evidence = params["evidence"]
+                condition.evidence = [
+                    ConditionEvidence({"code": [{"text": params["evidence"]}]})
+                ]
 
             # add "note" if present
             if "note" in params:
-                condition.note = params["note"]
+                condition.note = [Annotation({"text": params["note"]})]
 
             print(condition.as_json())
 
@@ -149,7 +160,9 @@ class FHIR:
 
             # add effectiveDateTime if present
             if "effectiveDateTime" in params:
-                medication_statement.effectiveDateTime = params["effectiveDateTime"]
+                medication_statement.effectiveDateTime = FHIRDate(
+                    params["effectiveDateTime"]
+                )
 
             # add effectivePeriod if present
             if "effectivePeriod" in params:
@@ -177,7 +190,7 @@ class FHIR:
 
             # add note if present
             if "note" in params:
-                medication_statement.note = params["note"]
+                medication_statement.note = [Annotation({"text": params["note"]})]
 
             print(medication_statement.as_json())
 
@@ -218,7 +231,7 @@ class FHIR:
 
             # add performedDateTime if present
             if "performedDateTime" in params:
-                procedure.performedDateTime = params["performedDateTime"]
+                procedure.performedDateTime = FHIRDate(params["performedDateTime"])
 
             # add performedPeriod if present
             if "performedPeriod" in params:
@@ -274,7 +287,7 @@ class FHIR:
 
             # add note if present
             if "note" in params:
-                procedure.note = params["note"]
+                procedure.note = [Annotation({"text": params["note"]})]
 
             print(procedure.as_json())
 
