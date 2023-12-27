@@ -1,3 +1,4 @@
+import datetime
 from openai import OpenAI
 
 
@@ -23,7 +24,9 @@ class LLMExtractor:
         messages = [
             {
                 "role": "system",
-                "content": self.config["GENAI"]["SYSTEM_PROMPT"],
+                "content": self.config["GENAI"]["SYSTEM_PROMPT"].format(
+                    date=datetime.datetime.now().strftime("%Y-%m-%d")
+                ),
             },
             {
                 "role": "user",

@@ -1,3 +1,4 @@
+import logging
 from fhirclient.client import FHIRClient
 
 # FHIR types
@@ -32,16 +33,32 @@ class FHIR:
         }
         self.fhir_client = FHIRClient(settings=fhir_settings)
 
+        # init FHIR resources
+        self.resources = []
+
+    def empty_resources(self):
+        """
+        This function empties the resources list.
+        """
+
+        self.resources = []
+
+    def get_resources(self):
+        """
+        This function returns the resources list.
+        """
+
+        return self.resources
+
     def write_condition(self, params):
         """
         This function writes a condition to the FHIR server.
         """
 
-        # serialize params
-        print(params)
+        logging.info(f"FROM LLM: {params}")
 
         # annotate condition code
-        annotations = self.annotator.run(params["code"])
+        annotations = self.annotator.run(params["condition"])
         if len(annotations) > 0:
             annotation = annotations[0]
 
@@ -56,7 +73,7 @@ class FHIR:
                                 "display": annotation["label"],
                             }
                         ],
-                        "text": params["code"],
+                        "text": params["condition"],
                     },
                     "subject": {"reference": "Patient/1"},
                     "clinicalStatus": {"text": params["clinicalStatus"]},
@@ -182,7 +199,10 @@ class FHIR:
                     {"text": params["verificationStatus"]}
                 )
 
-            print(condition.as_json())
+            logging.info(f"FHIR: {condition.as_json()}")
+
+            # add condition to resources list
+            self.resources.append(condition.as_json())
 
             return "Condition was added"
 
@@ -194,11 +214,10 @@ class FHIR:
         This function writes a procedure to the FHIR server.
         """
 
-        # serialize params
-        print(params)
+        logging.info(f"FROM LLM: {params}")
 
         # annotate procedure code
-        annotations = self.annotator.run(params["code"])
+        annotations = self.annotator.run(params["procedure"])
         if len(annotations) > 0:
             annotation = annotations[0]
 
@@ -213,7 +232,7 @@ class FHIR:
                                 "display": annotation["label"],
                             }
                         ],
-                        "text": params["code"],
+                        "text": params["procedure"],
                     },
                     "status": params["status"],
                     "subject": {"reference": "Patient/1"},
@@ -323,7 +342,10 @@ class FHIR:
                 else:
                     procedure.usedCode = [CodeableConcept({"text": params["usedCode"]})]
 
-            print(procedure.as_json())
+            logging.info(f"FHIR: {procedure.as_json()}")
+
+            # add procedure to resources list
+            self.resources.append(procedure.as_json())
 
             return "Procedure was added"
 
@@ -335,11 +357,10 @@ class FHIR:
         This function writes a medication statement to the FHIR server.
         """
 
-        # serialize params
-        print(params)
+        logging.info(f"FROM LLM: {params}")
 
         # annotate medication code
-        annotations = self.annotator.run(params["medicationCodeableConcept"])
+        annotations = self.annotator.run(params["medication_statement"])
         if len(annotations) > 0:
             annotation = annotations[0]
 
@@ -354,7 +375,7 @@ class FHIR:
                                 "display": annotation["label"],
                             }
                         ],
-                        "text": params["medicationCodeableConcept"],
+                        "text": params["medication_statement"],
                     },
                     "subject": {"reference": "Patient/1"},
                     "status": params["status"],
@@ -433,7 +454,10 @@ class FHIR:
                         CodeableConcept({"text": params["statusReason"]})
                     ]
 
-            print(medication_statement.as_json())
+            logging.info(f"FHIR: {medication_statement.as_json()}")
+
+            # add medication statement to resources list
+            self.resources.append(medication_statement.as_json())
 
             return "Medication statement was added"
 
