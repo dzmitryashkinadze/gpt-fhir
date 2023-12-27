@@ -22,16 +22,9 @@ class FHIR:
     that were extracted from doctor's notes to the FHIR server.
     """
 
-    def __init__(self, config, annotator):
+    def __init__(self, annotator):
         # copy annotator
         self.annotator = annotator
-
-        # FHIR client settings
-        fhir_settings = {
-            "app_id": config["FHIR"]["APP_ID"],
-            "api_base": config["FHIR"]["API_BASE"],
-        }
-        self.fhir_client = FHIRClient(settings=fhir_settings)
 
         # init FHIR resources
         self.resources = []

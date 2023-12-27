@@ -1,0 +1,223 @@
+OPENAI:
+    API_KEY: <YOUR_API_KEY>
+    MODEL: gpt-3.5-turbo-1106
+GENAI:
+    SYSTEM_PROMPT: |
+        Extract FHIR resources from a text document below.
+        Today's date is {date}.
+        For each resource enter subject name as Patient/1, 
+        Text:
+    TOOLS: [
+        {
+            "type": "function",
+            "function": {
+                "name": "extract_fhir_condition",
+                "description": "Extract a FHIR condition",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "abatementAge": {
+                            "type": "integer",
+                            "description": "Patient age if/when in resolution/remission",
+                        },
+                        "abatementDateTime": {
+                            "type": "string",
+                            "description": "Date and time if/when in resolution/remission",
+                        },
+                        "abatementPeriod": {
+                            "type": "string",
+                            "description": "Time period if/when in resolution/remission (formated as JSON {'start' : 'date','end' : 'date'})",
+                        },
+                        "abatementString": {
+                            "type": "string",
+                            "description": "if/when in resolution/remission",
+                        },
+                        "bodySite": {
+                            "type": "string",
+                            "description": "Anatomical location, if relevant",
+                        },
+                        "category": {
+                            "type": "string",
+                            "description": "problem-list-item | encounter-diagnosis",
+                        },
+                        "clinicalStatus": {
+                            "type": "string",
+                            "description": "active | recurrence | relapse | inactive | remission | resolved | unknown",
+                        },
+                        "condition": {
+                            "type": "string",
+                            "description": "Identification of the condition, problem or diagnosis",
+                        },
+                        "evidence": {
+                            "type": "string",
+                            "description": "Supporting evidence for the condition",
+                        },
+                        "note": {
+                            "type": "string",
+                            "description": "Additional information about the Condition",
+                        },
+                        "onsetAge": {
+                            "type": "integer",
+                            "description": "Estimated or actual age for disease onset",
+                        },
+                        "onsetDateTime": {
+                            "type": "string",
+                            "description": "Estimated or actual date-time for disease onset",
+                        },
+                        "onsetPeriod": {
+                            "type": "string",
+                            "description": "Estimated or actual time period for disease onset (formated as JSON {'start' : 'date','end' : 'date'})",
+                        },
+                        "onsetString": {
+                            "type": "string",
+                            "description": "Estimated or actual date, date-time, or age for disease onset",
+                        },
+                        "recordedDate": {
+                            "type": "string",
+                            "description": "Date condition was first recorded",
+                        },
+                        "severity": {
+                            "type": "string",
+                            "description": "Subjective severity of condition",
+                        },
+                        "stage": {
+                            "type": "string",
+                            "description": "Stage/grade, usually assessed formally",
+                        },
+                        "verificationStatus": {
+                            "type": "string",
+                            "description": "unconfirmed | provisional | differential | confirmed | refuted | entered-in-error",
+                        },
+                    },
+                    "required": ["condition", "clinicalStatus"],
+                },
+            },
+        },
+        {
+            "type": "function",
+            "function": {
+                "name": "extract_fhir_procedure",
+                "description": "Extract a FHIR procedure",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "bodySite": {
+                            "type": "string",
+                            "description": "Target body sites",
+                        },
+                        "category": {
+                            "type": "string",
+                            "description": "Classification of the procedure",
+                        },
+                        "procedure": {
+                            "type": "string",
+                            "description": "Identification of the procedure",
+                        },
+                        "complication": {
+                            "type": "string",
+                            "description": "Complication following the procedure",
+                        },
+                        "followUp": {
+                            "type": "string",
+                            "description": "Instructions for follow up",
+                        },
+                        "note": {
+                            "type": "string",
+                            "description": "Additional information about the procedure",
+                        },
+                        "outcome": {
+                            "type": "string",
+                            "description": "The result of procedure",
+                        },
+                        "performedAge": {
+                            "type": "integer",
+                            "description": "Patient age when the procedure was performed",
+                        },
+                        "performedDateTime": {
+                            "type": "string",
+                            "description": "When the procedure was performed",
+                        },
+                        "performedPeriod": {
+                            "type": "string",
+                            "description": "When the procedure was performed (formated as JSON {'start' : 'date','end' : 'date'})",
+                        },
+                        "performedString": {
+                            "type": "string",
+                            "description": "When the procedure was performed",
+                        },
+                        "reasonCode": {
+                            "type": "string",
+                            "description": "Coded reason procedure performed.",
+                        },
+                        "status": {
+                            "type": "string",
+                            "description": "preparation | in-progress | not-done | on-hold | stopped | completed | entered-in-error | unknown",
+                        },
+                        "statusReason": {
+                            "type": "string",
+                            "description": "Reason for current status",
+                        },
+                        "usedCode": {
+                            "type": "string",
+                            "description": "Items used during procedure",
+                        },
+                    },
+                    "required": ["procedure", "status"],
+                },
+            }
+        },
+        {
+            "type": "function",
+            "function": {
+                "name": "extract_fhir_medication_statement",
+                "description": "Extract a FHIR medication statement",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "category": {
+                            "type": "string",
+                            "description": "Type of medication statement",
+                        },
+                        "dateAsserted": {
+                            "type": "string",
+                            "description": "When the statement was asserted?",
+                        },
+                        "dosage": {
+                            "type": "string",
+                            "description": "Details of how medication is/was taken or should be taken",
+                        },
+                        "effectiveDateTime": {
+                            "type": "string",
+                            "description": "The date/time or interval when the medication is/was/will be taken",
+                        },
+                        "effectivePeriod": {
+                            "type": "string",
+                            "description": "The period when the medication is/was/will be taken (formated as JSON {'start' : 'date','end' : 'date'})",
+                        },
+                        "medication_statement": {
+                            "type": "string",
+                            "description": "What medication was taken",
+                        },
+                        "note": {
+                            "type": "string",
+                            "description": "Additional information about the medication statement",
+                        },
+                        "reasonCode": {
+                            "type": "string",
+                            "description": "Reason for taking medication",
+                        },
+                        "status": {
+                            "type": "string",
+                            "description": "active | completed | entered-in-error | intended | stopped | on-hold | unknown | not-taken",
+                        },
+                        "statusReason": {
+                            "type": "string",
+                            "description": "Reason for current status",
+                        },
+                    },
+                    "required": ["status", "medication_statement"],
+                },
+            }
+        }
+    ]
+        
