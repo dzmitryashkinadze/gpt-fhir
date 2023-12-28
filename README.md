@@ -3,6 +3,8 @@ A sizeable portion of all medical records are not structured at all. For example
 Extraction of structured FHIR resources such as patient health conditions, medical procedures, taken or prescribed medications, and many others from such unstructured data is not trivial as it covers a huge universe of possible patient health conditions and their written descriptions.
 Here I showcase how to extract FHIR resources from free text using function calling from OpenAI LLM models.
 
+Blogpost: https://medium.com/@dzmitry.ashkinadze/extract-fhir-resources-from-doctors-notes-free-text-using-large-language-models-d1733249de62
+
 ## Requirements
 * Access to OpenAI API
 * Python 3.11 (I use conda)
